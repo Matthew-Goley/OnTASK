@@ -400,8 +400,6 @@ function enterGuest(){
   document.getElementById("sidebarUser").textContent="Browsing as guest";
   document.getElementById("loginNudge").style.display="flex";
   syncStats();renderDiscover();renderExperiences();renderProfile();renderLeaderboard();
-  const p=new URLSearchParams(location.search).get("opportunity");
-  if(p&&opportunities.find(o=>o.id===p))setTimeout(()=>openDetail(p),80);
 }
 document.getElementById("guestBtn").addEventListener("click",enterGuest);
 document.getElementById("guestBtn2").addEventListener("click",enterGuest);
@@ -414,8 +412,6 @@ function initApp(){
   document.getElementById("sidebarUser").textContent=u.firstName+" "+u.lastName;
   document.getElementById("loginNudge").style.display="none";
   syncStats();renderDiscover();renderExperiences();renderProfile();renderLeaderboard();
-  const p=new URLSearchParams(location.search).get("opportunity");
-  if(p&&opportunities.find(o=>o.id===p))setTimeout(()=>openDetail(p),80);
 }
 
 function syncStats(){
@@ -597,8 +593,16 @@ document.getElementById("exportCsvBtn").addEventListener("click",()=>{
   URL.revokeObjectURL(url);
 });
 
-if(state.user){document.getElementById("loginOverlay").classList.add("hidden");initApp();}
-else{document.getElementById("loginNudge").style.display="flex";}
+const _deepOpp=new URLSearchParams(location.search).get("opportunity");
+if(_deepOpp&&opportunities.find(o=>o.id===_deepOpp)){
+  enterGuest();
+  setTimeout(()=>openDetail(_deepOpp),80);
+} else if(state.user){
+  document.getElementById("loginOverlay").classList.add("hidden");
+  initApp();
+} else {
+  document.getElementById("loginNudge").style.display="flex";
+}
 </script>
 </body>
 </html>
