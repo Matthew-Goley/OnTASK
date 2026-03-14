@@ -1,9 +1,834 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>Test</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>OnTask Service</title>
+    <style>
+      :root {
+        --primary: #00adbb;
+        --primary-dark: #008fa0;
+        --bg: #ffffff;
+        --topbar: #f8f7f3;
+        --danger: #d2282e;
+        --text-primary: #1a1a2e;
+        --text-secondary: #6b7280;
+        --border: #e5e7eb;
+        --card-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        font-family: Inter, Poppins, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+        color: var(--text-primary);
+        background: var(--bg);
+      }
+
+      .app {
+        min-height: 100vh;
+        display: grid;
+        grid-template-columns: 220px 1fr;
+        grid-template-rows: 72px 1fr;
+        grid-template-areas:
+          "sidebar topbar"
+          "sidebar main";
+      }
+
+      .sidebar {
+        grid-area: sidebar;
+        background: var(--primary);
+        color: #fff;
+        padding: 18px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-btn {
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: #fff;
+        text-align: left;
+        font-weight: 600;
+        padding: 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        min-height: 44px;
+      }
+
+      .nav-btn:hover {
+        background: rgba(255, 255, 255, 0.18);
+      }
+
+      .nav-btn.active {
+        background: var(--primary-dark);
+      }
+
+      .sidebar-foot {
+        margin-top: auto;
+        font-size: 12px;
+        opacity: 0.85;
+        text-align: center;
+      }
+
+      .topbar {
+        grid-area: topbar;
+        background: var(--topbar);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        align-items: center;
+        padding: 0 20px;
+        gap: 10px;
+      }
+
+      .brand {
+        font-size: 22px;
+        font-weight: 800;
+        color: var(--primary);
+      }
+
+      .top-title {
+        text-align: center;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+      }
+
+      .profile-widget {
+        margin-left: auto;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+      }
+
+      .metric {
+        font-size: 13px;
+        color: var(--text-secondary);
+      }
+
+      .avatar-btn,
+      .avatar-large {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        border: 2px solid var(--border);
+        background: linear-gradient(130deg, var(--primary) 0%, #6de0e8 100%);
+        color: #fff;
+        font-weight: 700;
+        display: grid;
+        place-items: center;
+      }
+
+      .avatar-btn {
+        cursor: pointer;
+      }
+
+      .mobile-menu {
+        display: none;
+        border: none;
+        background: transparent;
+        font-size: 24px;
+        margin-right: 10px;
+      }
+
+      .main {
+        grid-area: main;
+        padding: 20px;
+      }
+
+      .page {
+        display: none;
+      }
+
+      .page.active {
+        display: block;
+      }
+
+      h1 {
+        color: var(--primary);
+        margin-top: 0;
+      }
+
+      .controls {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 12px;
+        display: grid;
+        grid-template-columns: 2fr 1fr 1fr 1fr;
+        gap: 10px;
+        margin-bottom: 16px;
+      }
+
+      input,
+      select,
+      button,
+      textarea {
+        font: inherit;
+      }
+
+      input,
+      select,
+      textarea {
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        min-height: 44px;
+        padding: 10px;
+      }
+
+      .grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .card {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+        display: grid;
+        grid-template-columns: 30% 70%;
+        min-height: 180px;
+        transition: 0.2s ease;
+      }
+
+      .card:hover {
+        box-shadow: var(--card-shadow);
+        transform: translateY(-2px);
+        border-left: 5px solid var(--primary);
+      }
+
+      .thumb {
+        background: linear-gradient(180deg, #89eff6, var(--primary));
+        min-height: 100%;
+      }
+
+      .card-content {
+        padding: 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 8px;
+      }
+
+      .provider {
+        font-weight: 700;
+      }
+
+      .tagline,
+      .meta {
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
+      .chip {
+        background: #eafffd;
+        border: 1px solid #b4f0f4;
+        color: #0c7f89;
+        font-size: 12px;
+        border-radius: 999px;
+        padding: 4px 8px;
+        font-weight: 600;
+      }
+
+      .btn {
+        border: none;
+        border-radius: 10px;
+        min-height: 44px;
+        padding: 10px 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+      }
+
+      .btn-outline {
+        background: #fff;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+      }
+
+      .tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .tab {
+        border: 1px solid var(--border);
+        background: #fff;
+      }
+
+      .tab.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      .detail {
+        max-width: 900px;
+      }
+
+      .banner {
+        border-radius: 16px;
+        min-height: 220px;
+        background: linear-gradient(120deg, #a7f1f6 0%, #00adbb 100%);
+        margin-bottom: 14px;
+      }
+
+      .block {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 14px;
+        margin: 12px 0;
+      }
+
+      .video-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .video-card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      .profile-grid {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 16px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .stat {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
+      }
+
+      .modal {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        place-items: center;
+        padding: 12px;
+      }
+
+      .modal.show {
+        display: grid;
+      }
+
+      .modal-card {
+        width: min(520px, 100%);
+        background: #fff;
+        border-radius: 14px;
+        padding: 14px;
+      }
+
+      .qr {
+        width: 140px;
+        height: 140px;
+        border: 2px dashed var(--border);
+        display: grid;
+        place-items: center;
+        margin-top: 10px;
+      }
+
+      .hidden {
+        display: none;
+      }
+
+      @media (max-width: 1199px) {
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+      }
+
+      @media (max-width: 900px) {
+        .app {
+          grid-template-columns: 1fr;
+          grid-template-rows: 72px 1fr;
+          grid-template-areas:
+            "topbar"
+            "main";
+        }
+
+        .sidebar {
+          position: fixed;
+          inset: 72px auto 0 0;
+          width: 220px;
+          transform: translateX(-100%);
+          transition: 0.2s ease;
+          z-index: 20;
+        }
+
+        .sidebar.show {
+          transform: translateX(0);
+        }
+
+        .mobile-menu {
+          display: inline-block;
+        }
+
+        .topbar {
+          grid-template-columns: auto 1fr auto;
+        }
+
+        .controls,
+        .form-grid,
+        .stats,
+        .video-grid,
+        .profile-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+
+      @media (max-width: 767px) {
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .card {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
   </head>
   <body>
-    <h1 style="color: #2bbfbf;">It's working!</h1>
+    <div class="app">
+      <aside class="sidebar" id="sidebar">
+        <button class="nav-btn active" data-page="discover">🔍 Discover</button>
+        <button class="nav-btn" data-page="experiences">🏅 My Experiences</button>
+        <button class="nav-btn" data-page="profile">👤 Profile</button>
+        <div class="sidebar-foot">OnTask v1.0</div>
+      </aside>
+
+      <header class="topbar">
+        <div><button class="mobile-menu" id="menu">☰</button><span class="brand">OnTask Service</span></div>
+        <div class="top-title" id="topTitle">DISCOVER OPPORTUNITIES</div>
+        <div class="profile-widget">
+          <div>
+            <div class="metric">⭐ XP: <strong id="xpCount">0</strong></div>
+            <div class="metric">🕒 Hours: <strong id="hoursCount">0</strong></div>
+          </div>
+          <button class="avatar-btn" id="avatarJump" aria-label="Go to profile">OT</button>
+        </div>
+      </header>
+
+      <main class="main">
+        <section class="page active" id="discoverPage">
+          <h1>Discover Opportunities</h1>
+          <div class="controls">
+            <input id="searchInput" placeholder="Search by keyword" aria-label="Search by keyword" />
+            <select id="categoryFilter" aria-label="Category filter">
+              <option value="all">All categories</option>
+              <option value="environment">Environment</option>
+              <option value="education">Education</option>
+              <option value="health">Health</option>
+              <option value="food">Food Security</option>
+            </select>
+            <select id="locationFilter" aria-label="Location filter">
+              <option value="all">Any location</option>
+              <option value="st. louis">Near St. Louis</option>
+              <option value="virtual">Virtual</option>
+            </select>
+            <select id="sortBy" aria-label="Sort opportunities">
+              <option value="newest">Sort: Newest</option>
+              <option value="soonest">Sort: Soonest</option>
+              <option value="popular">Sort: Most popular</option>
+            </select>
+          </div>
+          <div class="grid" id="discoverGrid"></div>
+        </section>
+
+        <section class="page" id="detailPage">
+          <button class="btn btn-outline" id="backBtn">← Back</button>
+          <div class="detail" id="detailContainer"></div>
+        </section>
+
+        <section class="page" id="experiencesPage">
+          <h1>My Experiences</h1>
+          <div class="tabs">
+            <button class="btn tab active" data-tab="upcoming">Upcoming</button>
+            <button class="btn tab" data-tab="completed">Completed</button>
+          </div>
+          <div class="grid" id="expGrid"></div>
+        </section>
+
+        <section class="page" id="profilePage">
+          <h1>Profile</h1>
+          <div class="profile-grid block">
+            <div>
+              <div class="avatar-large">OT</div>
+              <button class="btn btn-outline" style="margin-top: 10px; width: 100%">Add / Change Photo</button>
+            </div>
+            <div>
+              <h2 style="margin-top: 0" id="profileName">Your Name</h2>
+              <div class="chip">XP Badge: <span id="badgeXP">0 XP</span></div>
+            </div>
+          </div>
+
+          <div class="block">
+            <h3>Info</h3>
+            <div class="form-grid" id="profileForm"></div>
+            <button class="btn btn-primary" id="saveProfile" style="margin-top: 10px">Save Changes</button>
+          </div>
+
+          <div class="stats">
+            <div class="stat"><strong id="statXP">0</strong><div>Total XP</div></div>
+            <div class="stat"><strong id="statHours">0</strong><div>Total Hours</div></div>
+            <div class="stat"><strong id="statCompleted">0</strong><div>Completed</div></div>
+            <div class="stat"><strong>Coming Soon</strong><div>Streak & badges</div></div>
+          </div>
+
+          <div class="block">
+            <h3>Recent Activity</h3>
+            <div id="activityFeed"></div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <div class="modal" id="shareModal" role="dialog" aria-modal="true" aria-label="Share opportunity">
+      <div class="modal-card">
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <h3 style="margin: 0">Share Opportunity</h3>
+          <button class="btn" id="closeShare">✕</button>
+        </div>
+        <p>Shareable Link</p>
+        <div style="display: flex; gap: 8px">
+          <input id="shareLink" readonly />
+          <button class="btn btn-primary" id="copyLink">Copy Link</button>
+        </div>
+        <div class="qr">QR Preview</div>
+      </div>
+    </div>
+
+    <script>
+      const defaults = {
+        profile: {
+          firstName: "",
+          lastName: "",
+          phone: "",
+          email: "",
+          organization: "",
+          ageGroup: "",
+          emergencyName: "",
+          emergencyPhone: ""
+        },
+        stats: { xp: 65, hours: 6, completed: 1 }
+      };
+
+      const profileFields = [
+        ["firstName", "First Name"],
+        ["lastName", "Last Name"],
+        ["phone", "Phone Number"],
+        ["email", "Email Address"],
+        ["organization", "Organization / School"],
+        ["ageGroup", "Age Group (Teen / Young Adult / Adult)"],
+        ["emergencyName", "Emergency Contact Name"],
+        ["emergencyPhone", "Emergency Contact Phone"]
+      ];
+
+      const opportunities = [
+        {
+          id: "opp-1001",
+          provider: "St. Louis Food Bank",
+          title: "Weekend Meal Packing",
+          tagline: "St. Louis · Sort and pack meals for families in need",
+          category: "food",
+          location: "st. louis",
+          date: "2026-04-12",
+          time: "9:00 AM – 12:00 PM",
+          description: "Help volunteers sort, pack, and prepare nutritious food boxes for local families.",
+          tags: ["Food Security", "3 hrs", "Indoors"],
+          xp: 50,
+          signups: 36,
+          videos: [{ title: "Safety Basics", duration: "4:12" }, { title: "Packing Line 101", duration: "6:08" }],
+          status: "upcoming",
+          hours: 3
+        },
+        {
+          id: "opp-1002",
+          provider: "City Parks Alliance",
+          title: "Riverfront Cleanup Day",
+          tagline: "St. Louis · Remove litter and restore green spaces",
+          category: "environment",
+          location: "st. louis",
+          date: "2026-04-20",
+          time: "8:30 AM – 11:30 AM",
+          description: "Join neighbors and students to clean trails, collect waste, and improve public spaces.",
+          tags: ["Environment", "3 hrs", "Outdoors"],
+          xp: 50,
+          signups: 51,
+          videos: [],
+          status: "completed",
+          hours: 3
+        },
+        {
+          id: "opp-1003",
+          provider: "Bright Futures Tutoring",
+          title: "After-School Reading Mentors",
+          tagline: "Virtual · Help elementary students improve reading confidence",
+          category: "education",
+          location: "virtual",
+          date: "2026-05-02",
+          time: "4:00 PM – 6:00 PM",
+          description: "Support students through guided reading sessions and one-on-one encouragement.",
+          tags: ["Education", "2 hrs", "Virtual"],
+          xp: 50,
+          signups: 18,
+          videos: [{ title: "Mentor Orientation", duration: "5:33" }],
+          status: "upcoming",
+          hours: 2
+        }
+      ];
+
+      const state = {
+        activePage: "discover",
+        expTab: "upcoming",
+        selected: null,
+        profile: JSON.parse(localStorage.getItem("ontask-profile") || JSON.stringify(defaults.profile)),
+        stats: JSON.parse(localStorage.getItem("ontask-stats") || JSON.stringify(defaults.stats))
+      };
+
+      const pages = {
+        discover: document.getElementById("discoverPage"),
+        detail: document.getElementById("detailPage"),
+        experiences: document.getElementById("experiencesPage"),
+        profile: document.getElementById("profilePage")
+      };
+
+      const topTitle = document.getElementById("topTitle");
+
+      function syncTopStats() {
+        document.getElementById("xpCount").textContent = state.stats.xp;
+        document.getElementById("hoursCount").textContent = state.stats.hours;
+        document.getElementById("badgeXP").textContent = `${state.stats.xp} XP`;
+        document.getElementById("statXP").textContent = state.stats.xp;
+        document.getElementById("statHours").textContent = state.stats.hours;
+        document.getElementById("statCompleted").textContent = state.stats.completed;
+      }
+
+      function setPage(page) {
+        state.activePage = page;
+        Object.entries(pages).forEach(([key, el]) => el.classList.toggle("active", key === page));
+        document.querySelectorAll(".nav-btn").forEach((btn) => btn.classList.toggle("active", btn.dataset.page === page));
+        const titles = {
+          discover: "DISCOVER OPPORTUNITIES",
+          detail: state.selected ? state.selected.title.toUpperCase() : "OPPORTUNITY DETAILS",
+          experiences: "MY EXPERIENCES",
+          profile: "PROFILE"
+        };
+        topTitle.textContent = titles[page];
+      }
+
+      function renderCards(list, container, isExperience = false) {
+        container.innerHTML = "";
+        if (!list.length) {
+          container.innerHTML = `<div class=\"block\">No opportunities found.</div>`;
+          return;
+        }
+        list.forEach((opp) => {
+          const card = document.createElement("article");
+          card.className = "card";
+          card.innerHTML = `
+            <div class="thumb" role="img" aria-label="${opp.title} header image placeholder"></div>
+            <div class="card-content">
+              <div class="provider">${opp.provider}</div>
+              <div class="tagline">${opp.tagline}</div>
+              <div class="chips">${opp.tags.map((t) => `<span class="chip">${t}</span>`).join("")}</div>
+              <div class="meta">${new Date(opp.date).toDateString()} · ${opp.time}</div>
+              ${isExperience ? `<div class=\"meta\">${opp.status === "completed" ? "XP earned" : "XP to earn"}: ${opp.xp}</div><button class=\"btn btn-outline share-btn\" data-id=\"${opp.id}\">Share Opportunity</button>` : ""}
+            </div>`;
+          card.addEventListener("click", (e) => {
+            if (e.target.classList.contains("share-btn")) return;
+            openDetail(opp.id);
+          });
+          container.appendChild(card);
+        });
+      }
+
+      function filteredOpportunities() {
+        const q = document.getElementById("searchInput").value.toLowerCase().trim();
+        const cat = document.getElementById("categoryFilter").value;
+        const loc = document.getElementById("locationFilter").value;
+        const sort = document.getElementById("sortBy").value;
+
+        let rows = opportunities.filter((o) => {
+          const matchesQuery = !q || `${o.provider} ${o.title} ${o.tagline}`.toLowerCase().includes(q);
+          const matchesCat = cat === "all" || o.category === cat;
+          const matchesLoc = loc === "all" || o.location === loc;
+          return matchesQuery && matchesCat && matchesLoc;
+        });
+
+        const sorters = {
+          newest: (a, b) => (a.id < b.id ? 1 : -1),
+          soonest: (a, b) => a.date.localeCompare(b.date),
+          popular: (a, b) => b.signups - a.signups
+        };
+        rows.sort(sorters[sort]);
+        return rows;
+      }
+
+      function renderDiscover() {
+        renderCards(filteredOpportunities(), document.getElementById("discoverGrid"));
+      }
+
+      function openDetail(id) {
+        state.selected = opportunities.find((o) => o.id === id);
+        const opp = state.selected;
+        setPage("detail");
+        const trainingHTML = opp.videos.length
+          ? `<div class=\"video-grid\">${opp.videos
+              .map(
+                (v, idx) =>
+                  `<div class=\"video-card\"><div class=\"thumb\" style=\"height:80px;border-radius:8px\" role=\"img\" aria-label=\"${v.title} thumbnail\"></div><strong>${v.title}</strong><div class=\"meta\">${v.duration}</div><button class=\"btn btn-outline\" style=\"margin-top:6px\">Play</button></div>`
+              )
+              .join("")}</div>`
+          : `<p class=\"meta\">No training materials yet — check back soon.</p>`;
+
+        document.getElementById("detailContainer").innerHTML = `
+          <div class="banner" role="img" aria-label="${opp.title} banner image placeholder"></div>
+          <h1>${opp.title}</h1>
+          <div class="block">${opp.description}</div>
+          <div class="block"><strong>Time & Location</strong><div>${new Date(opp.date).toDateString()} · ${opp.time}</div><div>${opp.tagline.split("·")[0]} (Map link placeholder)</div></div>
+          <div class="block">
+            <button class="btn btn-primary" id="signUpBtn">Sign Up</button>
+            <label style="display:block;margin-top:8px"><input id="commitBox" type="checkbox" /> I commit to showing up to this opportunity at this time</label>
+          </div>
+          <div class="block"><h3>Training Modules</h3>${trainingHTML}</div>`;
+
+        document.getElementById("signUpBtn").addEventListener("click", () => {
+          const committed = document.getElementById("commitBox").checked;
+          if (!committed) {
+            alert("Please check the commitment box before signing up.");
+            return;
+          }
+          const profileReady = state.profile.firstName && state.profile.lastName && state.profile.email;
+          state.stats.xp += 10;
+          localStorage.setItem("ontask-stats", JSON.stringify(state.stats));
+          syncTopStats();
+          if (!profileReady) {
+            alert("Please complete your profile before finalizing signup.");
+            setPage("profile");
+          } else {
+            alert("You are signed up! +10 XP awarded.");
+          }
+        });
+      }
+
+      function renderExperiences() {
+        const rows = opportunities.filter((o) => o.status === state.expTab);
+        renderCards(rows, document.getElementById("expGrid"), true);
+        document.querySelectorAll(".share-btn").forEach((btn) => {
+          btn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            const id = e.target.dataset.id;
+            const link = `${location.origin}${location.pathname}#opportunity=${id}`;
+            document.getElementById("shareLink").value = link;
+            document.getElementById("shareModal").classList.add("show");
+            state.stats.xp += 5;
+            localStorage.setItem("ontask-stats", JSON.stringify(state.stats));
+            syncTopStats();
+          });
+        });
+      }
+
+      function renderProfile() {
+        const form = document.getElementById("profileForm");
+        form.innerHTML = profileFields
+          .map(([k, label]) => `<label>${label}<input data-key="${k}" value="${state.profile[k] || ""}" /></label>`)
+          .join("");
+
+        const fullName = `${state.profile.firstName || "Your"} ${state.profile.lastName || "Name"}`;
+        document.getElementById("profileName").textContent = fullName;
+
+        const recent = opportunities.slice(0, 5).map((o) => `<div class=\"block\" style=\"margin:6px 0\">${o.title} · ${new Date(o.date).toDateString()} · ${o.xp} XP</div>`).join("");
+        document.getElementById("activityFeed").innerHTML = recent;
+      }
+
+      document.querySelectorAll(".nav-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          setPage(btn.dataset.page);
+          if (btn.dataset.page === "discover") renderDiscover();
+          if (btn.dataset.page === "experiences") renderExperiences();
+          if (btn.dataset.page === "profile") renderProfile();
+          document.getElementById("sidebar").classList.remove("show");
+        });
+      });
+
+      ["searchInput", "categoryFilter", "locationFilter", "sortBy"].forEach((id) =>
+        document.getElementById(id).addEventListener("input", renderDiscover)
+      );
+
+      document.getElementById("menu").addEventListener("click", () => document.getElementById("sidebar").classList.toggle("show"));
+      document.getElementById("avatarJump").addEventListener("click", () => {
+        setPage("profile");
+        renderProfile();
+      });
+      document.getElementById("backBtn").addEventListener("click", () => setPage("discover"));
+
+      document.querySelectorAll(".tab").forEach((tab) => {
+        tab.addEventListener("click", () => {
+          state.expTab = tab.dataset.tab;
+          document.querySelectorAll(".tab").forEach((t) => t.classList.toggle("active", t === tab));
+          renderExperiences();
+        });
+      });
+
+      document.getElementById("saveProfile").addEventListener("click", () => {
+        document.querySelectorAll("#profileForm input").forEach((input) => {
+          state.profile[input.dataset.key] = input.value.trim();
+        });
+        localStorage.setItem("ontask-profile", JSON.stringify(state.profile));
+        renderProfile();
+        alert("Profile saved.");
+      });
+
+      document.getElementById("closeShare").addEventListener("click", () => document.getElementById("shareModal").classList.remove("show"));
+      document.getElementById("copyLink").addEventListener("click", async () => {
+        const text = document.getElementById("shareLink").value;
+        try {
+          await navigator.clipboard.writeText(text);
+          alert("Link copied.");
+        } catch {
+          alert("Copy failed on this browser; please copy manually.");
+        }
+      });
+
+      syncTopStats();
+      renderDiscover();
+      renderExperiences();
+      renderProfile();
+    </script>
   </body>
 </html>
