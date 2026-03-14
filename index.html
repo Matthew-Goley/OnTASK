@@ -14,16 +14,18 @@
         --text-primary: #1a1a2e;
         --text-secondary: #6b7280;
         --border: #e5e7eb;
-        --shadow-soft: 0 6px 18px rgba(0, 0, 0, 0.06);
+        --card-shadow: 0 8px 18px rgba(0, 0, 0, 0.08);
       }
 
-      * { box-sizing: border-box; }
+      * {
+        box-sizing: border-box;
+      }
 
       body {
         margin: 0;
         font-family: Inter, Poppins, system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
-        background: var(--bg);
         color: var(--text-primary);
+        background: var(--bg);
       }
 
       .app {
@@ -32,51 +34,69 @@
         grid-template-columns: 220px 1fr;
         grid-template-rows: 72px 1fr;
         grid-template-areas:
-          "topbar topbar"
+          "sidebar topbar"
           "sidebar main";
+      }
+
+      .sidebar {
+        grid-area: sidebar;
+        background: var(--primary);
+        color: #fff;
+        padding: 18px 12px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      .nav-btn {
+        width: 100%;
+        border: none;
+        background: transparent;
+        color: #fff;
+        text-align: left;
+        font-weight: 600;
+        padding: 12px;
+        border-radius: 10px;
+        cursor: pointer;
+        min-height: 44px;
+      }
+
+      .nav-btn:hover {
+        background: rgba(255, 255, 255, 0.18);
+      }
+
+      .nav-btn.active {
+        background: var(--primary-dark);
+      }
+
+      .sidebar-foot {
+        margin-top: auto;
+        font-size: 12px;
+        opacity: 0.85;
+        text-align: center;
       }
 
       .topbar {
         grid-area: topbar;
+        background: var(--topbar);
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         display: grid;
         grid-template-columns: 1fr 1fr 1fr;
-        gap: 12px;
         align-items: center;
-        padding: 0 18px;
-        background: var(--topbar);
-        border-bottom: 1px solid var(--border);
-        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
-      }
-
-      .brand-wrap {
-        display: flex;
-        align-items: center;
+        padding: 0 20px;
         gap: 10px;
-      }
-
-      .logo-mark {
-        width: 36px;
-        height: 36px;
-        border-radius: 12px;
-        background: linear-gradient(135deg, #0073c6 0%, #00c8c1 100%);
-        display: grid;
-        place-items: center;
-        color: #fff;
-        font-weight: 800;
-        box-shadow: var(--shadow-soft);
       }
 
       .brand {
         font-size: 22px;
         font-weight: 800;
-        color: var(--primary-dark);
+        color: var(--primary);
       }
 
       .top-title {
         text-align: center;
         font-weight: 800;
-        font-size: 14px;
-        letter-spacing: 0.06em;
+        letter-spacing: 0.04em;
       }
 
       .profile-widget {
@@ -89,14 +109,13 @@
       .metric {
         font-size: 13px;
         color: var(--text-secondary);
-        text-align: right;
       }
 
       .avatar-btn,
       .avatar-large {
-        width: 48px;
-        height: 48px;
-        border-radius: 999px;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
         border: 2px solid var(--border);
         background: linear-gradient(130deg, var(--primary) 0%, #6de0e8 100%);
         color: #fff;
@@ -105,48 +124,16 @@
         place-items: center;
       }
 
-      .avatar-btn { cursor: pointer; }
+      .avatar-btn {
+        cursor: pointer;
+      }
 
       .mobile-menu {
         display: none;
         border: none;
         background: transparent;
-        color: var(--primary-dark);
         font-size: 24px;
-        margin-right: 8px;
-      }
-
-      .sidebar {
-        grid-area: sidebar;
-        background: var(--primary);
-        color: #fff;
-        display: flex;
-        flex-direction: column;
-        gap: 8px;
-        padding: 14px 10px;
-      }
-
-      .nav-btn {
-        width: 100%;
-        border: none;
-        border-radius: 10px;
-        background: transparent;
-        color: #fff;
-        min-height: 44px;
-        text-align: left;
-        font-weight: 600;
-        padding: 0 12px;
-        cursor: pointer;
-      }
-
-      .nav-btn:hover { background: rgba(255, 255, 255, 0.16); }
-      .nav-btn.active { background: var(--primary-dark); }
-
-      .sidebar-foot {
-        margin-top: auto;
-        text-align: center;
-        font-size: 12px;
-        opacity: 0.9;
+        margin-right: 10px;
       }
 
       .main {
@@ -154,50 +141,45 @@
         padding: 20px;
       }
 
-      h1 {
-        color: var(--primary-dark);
-        margin: 0 0 14px;
-        font-size: 28px;
+      .page {
+        display: none;
       }
 
-      .page { display: none; }
-      .page.active { display: block; }
+      .page.active {
+        display: block;
+      }
 
-      .surface {
-        background: #fff;
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        box-shadow: var(--shadow-soft);
+      h1 {
+        color: var(--primary);
+        margin-top: 0;
       }
 
       .controls {
+        background: #fff;
+        border: 1px solid var(--border);
+        border-radius: 14px;
         padding: 12px;
         display: grid;
         grid-template-columns: 2fr 1fr 1fr 1fr;
         gap: 10px;
-        margin-bottom: 14px;
+        margin-bottom: 16px;
       }
 
-      input, select, textarea, button { font: inherit; }
-      input, select, textarea {
+      input,
+      select,
+      button,
+      textarea {
+        font: inherit;
+      }
+
+      input,
+      select,
+      textarea {
         border: 1px solid var(--border);
         border-radius: 10px;
         min-height: 44px;
         padding: 10px;
       }
-
-      .btn {
-        min-height: 44px;
-        border-radius: 10px;
-        border: none;
-        padding: 10px 14px;
-        font-weight: 700;
-        cursor: pointer;
-      }
-
-      .btn-primary { background: var(--primary); color: #fff; }
-      .btn-primary:hover { background: var(--primary-dark); }
-      .btn-outline { background: #fff; border: 2px solid var(--primary); color: var(--primary-dark); }
 
       .grid {
         display: grid;
@@ -206,24 +188,25 @@
       }
 
       .card {
-        display: grid;
-        grid-template-columns: 30% 70%;
+        background: #fff;
         border: 1px solid var(--border);
         border-radius: 14px;
         overflow: hidden;
-        background: #fff;
-        transition: transform 0.2s ease, box-shadow 0.2s ease;
+        display: grid;
+        grid-template-columns: 30% 70%;
+        min-height: 180px;
+        transition: 0.2s ease;
       }
 
       .card:hover {
+        box-shadow: var(--card-shadow);
         transform: translateY(-2px);
-        box-shadow: var(--shadow-soft);
-        border-left: 4px solid var(--primary);
+        border-left: 5px solid var(--primary);
       }
 
       .thumb {
-        min-height: 170px;
-        background: linear-gradient(180deg, #9ef0f6 0%, #00adbb 100%);
+        background: linear-gradient(180deg, #89eff6, var(--primary));
+        min-height: 100%;
       }
 
       .card-content {
@@ -233,30 +216,78 @@
         gap: 8px;
       }
 
-      .provider { font-weight: 700; }
-      .tagline, .meta { color: var(--text-secondary); font-size: 14px; }
+      .provider {
+        font-weight: 700;
+      }
 
-      .chips { display: flex; gap: 6px; flex-wrap: wrap; }
+      .tagline,
+      .meta {
+        color: var(--text-secondary);
+        font-size: 14px;
+      }
+
+      .chips {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+      }
+
       .chip {
-        border: 1px solid #b4f0f4;
         background: #eafffd;
+        border: 1px solid #b4f0f4;
         color: #0c7f89;
+        font-size: 12px;
         border-radius: 999px;
         padding: 4px 8px;
-        font-size: 12px;
         font-weight: 600;
       }
 
-      .tabs { display: flex; gap: 8px; margin-bottom: 14px; }
-      .tab { border: 1px solid var(--border); background: #fff; }
-      .tab.active { background: var(--primary); color: #fff; border-color: var(--primary); }
+      .btn {
+        border: none;
+        border-radius: 10px;
+        min-height: 44px;
+        padding: 10px 14px;
+        font-weight: 700;
+        cursor: pointer;
+      }
 
-      .detail { max-width: 920px; }
+      .btn-primary {
+        background: var(--primary);
+        color: #fff;
+      }
+
+      .btn-outline {
+        background: #fff;
+        border: 2px solid var(--primary);
+        color: var(--primary);
+      }
+
+      .tabs {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 14px;
+      }
+
+      .tab {
+        border: 1px solid var(--border);
+        background: #fff;
+      }
+
+      .tab.active {
+        background: var(--primary);
+        color: #fff;
+        border-color: var(--primary);
+      }
+
+      .detail {
+        max-width: 900px;
+      }
+
       .banner {
-        border-radius: 14px;
-        min-height: 230px;
+        border-radius: 16px;
+        min-height: 220px;
         background: linear-gradient(120deg, #a7f1f6 0%, #00adbb 100%);
-        margin-bottom: 12px;
+        margin-bottom: 14px;
       }
 
       .block {
@@ -266,18 +297,40 @@
         margin: 12px 0;
       }
 
-      .video-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 12px; }
-      .video-card { border: 1px solid var(--border); border-radius: 10px; padding: 10px; }
+      .video-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
 
-      .profile-grid { display: grid; grid-template-columns: 180px 1fr; gap: 16px; }
-      .form-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 10px; }
-      .stats { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 10px; margin-top: 12px; }
-      .stat { border: 1px solid var(--border); border-radius: 12px; padding: 10px; }
+      .video-card {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
+      }
 
-      .login-panel {
-        max-width: 440px;
-        margin: 0 auto;
-        padding: 18px;
+      .profile-grid {
+        display: grid;
+        grid-template-columns: 180px 1fr;
+        gap: 16px;
+      }
+
+      .form-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .stats {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 10px;
+      }
+
+      .stat {
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 10px;
       }
 
       .modal {
@@ -289,7 +342,10 @@
         padding: 12px;
       }
 
-      .modal.show { display: grid; }
+      .modal.show {
+        display: grid;
+      }
+
       .modal-card {
         width: min(520px, 100%);
         background: #fff;
@@ -304,11 +360,16 @@
         display: grid;
         place-items: center;
         margin-top: 10px;
-        color: var(--text-secondary);
+      }
+
+      .hidden {
+        display: none;
       }
 
       @media (max-width: 1199px) {
-        .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+        .grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
       }
 
       @media (max-width: 900px) {
@@ -326,51 +387,66 @@
           width: 220px;
           transform: translateX(-100%);
           transition: 0.2s ease;
-          z-index: 30;
+          z-index: 20;
         }
 
-        .sidebar.show { transform: translateX(0); }
-        .mobile-menu { display: inline-block; }
-        .topbar { grid-template-columns: auto 1fr auto; }
-        .controls, .profile-grid, .form-grid, .stats, .video-grid { grid-template-columns: 1fr; }
+        .sidebar.show {
+          transform: translateX(0);
+        }
+
+        .mobile-menu {
+          display: inline-block;
+        }
+
+        .topbar {
+          grid-template-columns: auto 1fr auto;
+        }
+
+        .controls,
+        .form-grid,
+        .stats,
+        .video-grid,
+        .profile-grid {
+          grid-template-columns: 1fr;
+        }
       }
 
       @media (max-width: 767px) {
-        .grid { grid-template-columns: 1fr; }
-        .card { grid-template-columns: 1fr; }
+        .grid {
+          grid-template-columns: 1fr;
+        }
+
+        .card {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
   <body>
     <div class="app">
+      <aside class="sidebar" id="sidebar">
+        <button class="nav-btn active" data-page="discover">🔍 Discover</button>
+        <button class="nav-btn" data-page="experiences">🏅 My Experiences</button>
+        <button class="nav-btn" data-page="profile">👤 Profile</button>
+        <div class="sidebar-foot">OnTask v1.0</div>
+      </aside>
+
       <header class="topbar">
-        <div class="brand-wrap">
-          <button class="mobile-menu" id="menu" aria-label="Toggle menu">☰</button>
-          <div class="logo-mark" aria-hidden="true">OT</div>
-          <div class="brand">OnTask Service</div>
-        </div>
+        <div><button class="mobile-menu" id="menu">☰</button><span class="brand">OnTask Service</span></div>
         <div class="top-title" id="topTitle">DISCOVER OPPORTUNITIES</div>
         <div class="profile-widget">
           <div>
-            <div class="metric">XP: <strong id="xpCount">0</strong></div>
-            <div class="metric">Hours: <strong id="hoursCount">0</strong></div>
+            <div class="metric">⭐ XP: <strong id="xpCount">0</strong></div>
+            <div class="metric">🕒 Hours: <strong id="hoursCount">0</strong></div>
           </div>
           <button class="avatar-btn" id="avatarJump" aria-label="Go to profile">OT</button>
         </div>
       </header>
 
-      <aside class="sidebar" id="sidebar">
-        <button class="nav-btn active" data-page="discover">Discover</button>
-        <button class="nav-btn" data-page="experiences">My Experiences</button>
-        <button class="nav-btn" data-page="profile">Profile</button>
-        <button class="nav-btn" data-page="login">Log In</button>
-        <div class="sidebar-foot">OnTask v1.1</div>
-      </aside>
-
       <main class="main">
         <section class="page active" id="discoverPage">
           <h1>Discover Opportunities</h1>
-          <div class="controls surface">
+          <div class="controls">
             <input id="searchInput" placeholder="Search by keyword" aria-label="Search by keyword" />
             <select id="categoryFilter" aria-label="Category filter">
               <option value="all">All categories</option>
@@ -387,14 +463,14 @@
             <select id="sortBy" aria-label="Sort opportunities">
               <option value="newest">Sort: Newest</option>
               <option value="soonest">Sort: Soonest</option>
-              <option value="popular">Sort: Most Popular</option>
+              <option value="popular">Sort: Most popular</option>
             </select>
           </div>
           <div class="grid" id="discoverGrid"></div>
         </section>
 
         <section class="page" id="detailPage">
-          <button class="btn btn-outline" id="backBtn">Back</button>
+          <button class="btn btn-outline" id="backBtn">← Back</button>
           <div class="detail" id="detailContainer"></div>
         </section>
 
@@ -409,26 +485,21 @@
 
         <section class="page" id="profilePage">
           <h1>Profile</h1>
-          <div class="block" style="background:#f8f7f3">
-            If you already have an account, log in.
-            <button class="btn btn-outline" id="gotoLogin" style="margin-left:8px">Go to Log In</button>
-          </div>
-
           <div class="profile-grid block">
             <div>
               <div class="avatar-large">OT</div>
-              <button class="btn btn-outline" style="margin-top:10px;width:100%">Add / Change Photo</button>
+              <button class="btn btn-outline" style="margin-top: 10px; width: 100%">Add / Change Photo</button>
             </div>
             <div>
-              <h2 style="margin:0" id="profileName">Your Name</h2>
-              <div class="chip" style="margin-top:8px">XP Badge: <span id="badgeXP">0 XP</span></div>
+              <h2 style="margin-top: 0" id="profileName">Your Name</h2>
+              <div class="chip">XP Badge: <span id="badgeXP">0 XP</span></div>
             </div>
           </div>
 
           <div class="block">
             <h3>Info</h3>
             <div class="form-grid" id="profileForm"></div>
-            <button class="btn btn-primary" id="saveProfile" style="margin-top:10px">Save Changes</button>
+            <button class="btn btn-primary" id="saveProfile" style="margin-top: 10px">Save Changes</button>
           </div>
 
           <div class="stats">
@@ -443,33 +514,21 @@
             <div id="activityFeed"></div>
           </div>
         </section>
-
-        <section class="page" id="loginPage">
-          <h1>Log In</h1>
-          <div class="surface login-panel">
-            <p style="margin-top:0;color:var(--text-secondary)">Welcome back. Log in to manage your profile, service commitments, and progress.</p>
-            <label>Email Address<input id="loginEmail" type="email" placeholder="name@example.com" /></label>
-            <label style="display:block;margin-top:10px">Password<input id="loginPassword" type="password" placeholder="Enter password" /></label>
-            <button class="btn btn-primary" id="loginBtn" style="margin-top:12px;width:100%">Log In</button>
-            <button class="btn btn-outline" id="loginToProfile" style="margin-top:10px;width:100%">Back to Profile</button>
-          </div>
-        </section>
       </main>
     </div>
 
     <div class="modal" id="shareModal" role="dialog" aria-modal="true" aria-label="Share opportunity">
       <div class="modal-card">
-        <div style="display:flex;justify-content:space-between;align-items:center">
-          <h3 style="margin:0">Share Opportunity</h3>
-          <button class="btn" id="closeShare">Close</button>
+        <div style="display: flex; justify-content: space-between; align-items: center">
+          <h3 style="margin: 0">Share Opportunity</h3>
+          <button class="btn" id="closeShare">✕</button>
         </div>
         <p>Shareable Link</p>
-        <div style="display:flex;gap:8px">
+        <div style="display: flex; gap: 8px">
           <input id="shareLink" readonly />
           <button class="btn btn-primary" id="copyLink">Copy Link</button>
         </div>
-        <a id="shareAnchor" href="#" target="_blank" rel="noopener" class="meta" style="display:inline-block;margin-top:10px">Open shared activity link</a>
-        <div class="qr"><img id="qrImage" alt="QR code preview" width="140" height="140" /></div>
+        <div class="qr">QR Preview</div>
       </div>
     </div>
 
@@ -558,16 +617,14 @@
         expTab: "upcoming",
         selected: null,
         profile: JSON.parse(localStorage.getItem("ontask-profile") || JSON.stringify(defaults.profile)),
-        stats: JSON.parse(localStorage.getItem("ontask-stats") || JSON.stringify(defaults.stats)),
-        signups: JSON.parse(localStorage.getItem("ontask-signups") || "[]")
+        stats: JSON.parse(localStorage.getItem("ontask-stats") || JSON.stringify(defaults.stats))
       };
 
       const pages = {
         discover: document.getElementById("discoverPage"),
         detail: document.getElementById("detailPage"),
         experiences: document.getElementById("experiencesPage"),
-        profile: document.getElementById("profilePage"),
-        login: document.getElementById("loginPage")
+        profile: document.getElementById("profilePage")
       };
 
       const topTitle = document.getElementById("topTitle");
@@ -585,13 +642,11 @@
         state.activePage = page;
         Object.entries(pages).forEach(([key, el]) => el.classList.toggle("active", key === page));
         document.querySelectorAll(".nav-btn").forEach((btn) => btn.classList.toggle("active", btn.dataset.page === page));
-
         const titles = {
           discover: "DISCOVER OPPORTUNITIES",
           detail: state.selected ? state.selected.title.toUpperCase() : "OPPORTUNITY DETAILS",
           experiences: "MY EXPERIENCES",
-          profile: "PROFILE",
-          login: "ACCOUNT LOGIN"
+          profile: "PROFILE"
         };
         topTitle.textContent = titles[page];
       }
@@ -602,7 +657,6 @@
           container.innerHTML = `<div class=\"block\">No opportunities found.</div>`;
           return;
         }
-
         list.forEach((opp) => {
           const card = document.createElement("article");
           card.className = "card";
@@ -615,12 +669,10 @@
               <div class="meta">${new Date(opp.date).toDateString()} · ${opp.time}</div>
               ${isExperience ? `<div class=\"meta\">${opp.status === "completed" ? "XP earned" : "XP to earn"}: ${opp.xp}</div><button class=\"btn btn-outline share-btn\" data-id=\"${opp.id}\">Share Opportunity</button>` : ""}
             </div>`;
-
           card.addEventListener("click", (e) => {
             if (e.target.classList.contains("share-btn")) return;
             openDetail(opp.id);
           });
-
           container.appendChild(card);
         });
       }
@@ -643,7 +695,6 @@
           soonest: (a, b) => a.date.localeCompare(b.date),
           popular: (a, b) => b.signups - a.signups
         };
-
         rows.sort(sorters[sort]);
         return rows;
       }
@@ -656,11 +707,11 @@
         state.selected = opportunities.find((o) => o.id === id);
         const opp = state.selected;
         setPage("detail");
-
         const trainingHTML = opp.videos.length
           ? `<div class=\"video-grid\">${opp.videos
               .map(
-                (v) => `<div class=\"video-card\"><div class=\"thumb\" style=\"height:80px;border-radius:8px\" role=\"img\" aria-label=\"${v.title} thumbnail\"></div><strong>${v.title}</strong><div class=\"meta\">${v.duration}</div><button class=\"btn btn-outline\" style=\"margin-top:6px\">Play</button></div>`
+                (v, idx) =>
+                  `<div class=\"video-card\"><div class=\"thumb\" style=\"height:80px;border-radius:8px\" role=\"img\" aria-label=\"${v.title} thumbnail\"></div><strong>${v.title}</strong><div class=\"meta\">${v.duration}</div><button class=\"btn btn-outline\" style=\"margin-top:6px\">Play</button></div>`
               )
               .join("")}</div>`
           : `<p class=\"meta\">No training materials yet — check back soon.</p>`;
@@ -677,56 +728,33 @@
           <div class="block"><h3>Training Modules</h3>${trainingHTML}</div>`;
 
         document.getElementById("signUpBtn").addEventListener("click", () => {
-          if (!document.getElementById("commitBox").checked) {
+          const committed = document.getElementById("commitBox").checked;
+          if (!committed) {
             alert("Please check the commitment box before signing up.");
             return;
           }
-
-          if (!state.signups.includes(opp.id)) {
-            state.signups.push(opp.id);
-            localStorage.setItem("ontask-signups", JSON.stringify(state.signups));
-          }
-
           const profileReady = state.profile.firstName && state.profile.lastName && state.profile.email;
           state.stats.xp += 10;
           localStorage.setItem("ontask-stats", JSON.stringify(state.stats));
           syncTopStats();
-          renderExperiences();
-
           if (!profileReady) {
             alert("Please complete your profile before finalizing signup.");
             setPage("profile");
           } else {
-            alert("You are signed up. 10 XP awarded.");
+            alert("You are signed up! +10 XP awarded.");
           }
         });
       }
 
       function renderExperiences() {
-        let rows = [];
-        if (state.expTab === "completed") {
-          rows = opportunities.filter((o) => o.status === "completed");
-        } else {
-          const merged = opportunities.filter((o) => o.status === "upcoming" || state.signups.includes(o.id));
-          const seen = new Set();
-          rows = merged.filter((o) => {
-            if (seen.has(o.id)) return false;
-            seen.add(o.id);
-            return true;
-          });
-        }
+        const rows = opportunities.filter((o) => o.status === state.expTab);
         renderCards(rows, document.getElementById("expGrid"), true);
         document.querySelectorAll(".share-btn").forEach((btn) => {
           btn.addEventListener("click", (e) => {
             e.stopPropagation();
             const id = e.target.dataset.id;
-            const shareUrl = `${location.origin}${location.pathname}#opportunity=${id}`;
-            document.getElementById("shareLink").value = shareUrl;
-            const anchor = document.getElementById("shareAnchor");
-            anchor.href = shareUrl;
-            const qr = document.getElementById("qrImage");
-            qr.src = `https://api.qrserver.com/v1/create-qr-code/?size=280x280&data=${encodeURIComponent(shareUrl)}`;
-            qr.alt = `QR code for ${id}`;
+            const link = `${location.origin}${location.pathname}#opportunity=${id}`;
+            document.getElementById("shareLink").value = link;
             document.getElementById("shareModal").classList.add("show");
             state.stats.xp += 5;
             localStorage.setItem("ontask-stats", JSON.stringify(state.stats));
@@ -737,13 +765,15 @@
 
       function renderProfile() {
         const form = document.getElementById("profileForm");
-        form.innerHTML = profileFields.map(([k, label]) => `<label>${label}<input data-key="${k}" value="${state.profile[k] || ""}" /></label>`).join("");
-
-        document.getElementById("profileName").textContent = `${state.profile.firstName || "Your"} ${state.profile.lastName || "Name"}`;
-        document.getElementById("activityFeed").innerHTML = opportunities
-          .slice(0, 5)
-          .map((o) => `<div class=\"block\" style=\"margin:6px 0\">${o.title} · ${new Date(o.date).toDateString()} · ${o.xp} XP</div>`)
+        form.innerHTML = profileFields
+          .map(([k, label]) => `<label>${label}<input data-key="${k}" value="${state.profile[k] || ""}" /></label>`)
           .join("");
+
+        const fullName = `${state.profile.firstName || "Your"} ${state.profile.lastName || "Name"}`;
+        document.getElementById("profileName").textContent = fullName;
+
+        const recent = opportunities.slice(0, 5).map((o) => `<div class=\"block\" style=\"margin:6px 0\">${o.title} · ${new Date(o.date).toDateString()} · ${o.xp} XP</div>`).join("");
+        document.getElementById("activityFeed").innerHTML = recent;
       }
 
       document.querySelectorAll(".nav-btn").forEach((btn) => {
@@ -756,9 +786,9 @@
         });
       });
 
-      ["searchInput", "categoryFilter", "locationFilter", "sortBy"].forEach((id) => {
-        document.getElementById(id).addEventListener("input", renderDiscover);
-      });
+      ["searchInput", "categoryFilter", "locationFilter", "sortBy"].forEach((id) =>
+        document.getElementById(id).addEventListener("input", renderDiscover)
+      );
 
       document.getElementById("menu").addEventListener("click", () => document.getElementById("sidebar").classList.toggle("show"));
       document.getElementById("avatarJump").addEventListener("click", () => {
@@ -775,24 +805,6 @@
         });
       });
 
-      document.getElementById("gotoLogin").addEventListener("click", () => setPage("login"));
-      document.getElementById("loginToProfile").addEventListener("click", () => {
-        setPage("profile");
-        renderProfile();
-      });
-
-      document.getElementById("loginBtn").addEventListener("click", () => {
-        const email = document.getElementById("loginEmail").value.trim();
-        const pass = document.getElementById("loginPassword").value.trim();
-        if (!email || !pass) {
-          alert("Please enter both email and password.");
-          return;
-        }
-        alert("Logged in (prototype flow).");
-        setPage("profile");
-        renderProfile();
-      });
-
       document.getElementById("saveProfile").addEventListener("click", () => {
         document.querySelectorAll("#profileForm input").forEach((input) => {
           state.profile[input.dataset.key] = input.value.trim();
@@ -804,31 +816,19 @@
 
       document.getElementById("closeShare").addEventListener("click", () => document.getElementById("shareModal").classList.remove("show"));
       document.getElementById("copyLink").addEventListener("click", async () => {
+        const text = document.getElementById("shareLink").value;
         try {
-          await navigator.clipboard.writeText(document.getElementById("shareLink").value);
+          await navigator.clipboard.writeText(text);
           alert("Link copied.");
         } catch {
-          alert("Copy failed in this browser. Please copy manually.");
+          alert("Copy failed on this browser; please copy manually.");
         }
       });
-
-      function syncHashRouting() {
-        const hash = new URLSearchParams(location.hash.replace(/^#/, ""));
-        const opportunityId = hash.get("opportunity");
-        if (!opportunityId) return;
-        const target = opportunities.find((o) => o.id === opportunityId);
-        if (target) {
-          openDetail(opportunityId);
-        }
-      }
-
-      window.addEventListener("hashchange", syncHashRouting);
 
       syncTopStats();
       renderDiscover();
       renderExperiences();
       renderProfile();
-      syncHashRouting();
     </script>
   </body>
 </html>
