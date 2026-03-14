@@ -18,7 +18,7 @@
     /* LOGIN */
     .login-overlay{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:100;}
     .login-overlay.hidden{display:none;}
-    .login-card{width:min(420px,92%);background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px 36px;}
+    .login-card{width:min(420px,92%);background:var(--surface);border:1px solid var(--border);border-radius:16px;padding:40px 36px;overflow:hidden;}
     .login-logo-row{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
     .login-logo-img{width:36px;height:36px;object-fit:contain;}
     .login-logo{font-family:'Syne',sans-serif;font-size:24px;font-weight:800;color:var(--primary);}
@@ -166,9 +166,9 @@
 
     <div id="registerPane">
       <h2 style="font-family:'Syne',sans-serif;font-size:17px;margin-bottom:16px;">Create an account</h2>
-      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;">
-        <div class="field"><label>First name</label><input id="regFirst" placeholder="Jane"/></div>
-        <div class="field"><label>Last name</label><input id="regLast" placeholder="Doe"/></div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;min-width:0;">
+        <div class="field" style="min-width:0;"><label>First name</label><input id="regFirst" placeholder="Jane" style="width:100%;min-width:0;"/></div>
+        <div class="field" style="min-width:0;"><label>Last name</label><input id="regLast" placeholder="Doe" style="width:100%;min-width:0;"/></div>
       </div>
       <div class="field"><label>Email</label><input type="email" id="regEmail" placeholder="jane@email.com"/></div>
       <div class="field"><label>School / Organization</label><input id="regOrg" placeholder="Your school or org"/></div>
